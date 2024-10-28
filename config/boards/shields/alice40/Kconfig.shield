@@ -6,3 +6,31 @@ config SHIELD_ALICE40_LEFT
 
 config SHIELD_ALICE40_RIGHT
     def_bool $(shields_list_contains,alice40_right)
+
+# Add ZMK Studio support to the Alice40 shield configuration
+menuconfig ZMK_STUDIO
+    bool "Studio Support"
+    default y if SHIELD_ALICE40_LEFT || SHIELD_ALICE40_RIGHT
+    help
+      Add firmware support for realtime keymap updates (ZMK Studio)
+
+if ZMK_STUDIO
+
+config ZMK_STUDIO_RPC
+    bool "Remote Procedure Calls (RPC)"
+    default y
+    help
+      Enable RPC support for ZMK Studio
+
+config ZMK_STUDIO_TRANSPORT_UART
+    bool "Serial Transport for ZMK Studio"
+    default y if SHIELD_ALICE40_LEFT || SHIELD_ALICE40_RIGHT
+
+config ZMK_STUDIO_TRANSPORT_BLE
+    bool "BLE Transport for ZMK Studio"
+    default y
+    depends on ZMK_BLE
+    help
+      Enable BLE transport for ZMK Studio if BLE is enabled
+
+endif
